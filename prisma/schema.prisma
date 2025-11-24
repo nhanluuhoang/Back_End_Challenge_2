@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Publisher {
+  id          String   @id @default(uuid())
+  email       String   @unique
+  password    String
+  name        String
+  description String?
+  webhookUrl  String?  @map("webhook_url")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  news        News[]
+
+  @@map("publishers")
+}
+
+model Category {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  news        News[]
+
+  @@map("categories")
+}
+
+model News {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  content     String
+  excerpt     String?
+  imageUrl    String?  @map("image_url")
+  published   Boolean  @default(false)
+  viewCount   Int      @default(0) @map("view_count")
+  publisherId String   @map("publisher_id")
+  categoryId  String   @map("category_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  
+  publisher   Publisher @relation(fields: [publisherId], references: [id], onDelete: Cascade)
+  category    Category  @relation(fields: [categoryId], references: [id])
+
+  @@index([publisherId])
+  @@index([categoryId])
+  @@index([published])
+  @@map("news")
+}
