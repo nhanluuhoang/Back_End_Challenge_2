@@ -2,7 +2,7 @@ import { Context } from '../types/context';
 import { GraphQLError } from 'graphql';
 import { triggerWebhook } from '../utils/webhook';
 
-interface NewsArgs {
+export interface NewsArgs {
   search?: string;
   categoryId?: string;
   publisherId?: string;
@@ -13,12 +13,12 @@ interface NewsArgs {
   sortOrder?: string;
 }
 
-interface NewsDetailArgs {
+export interface NewsDetailArgs {
   id?: string;
   slug?: string;
 }
 
-interface MyNewsArgs {
+export interface MyNewsArgs {
   page?: number;
   limit?: number;
   published?: boolean;

@@ -2,9 +2,9 @@ import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import express from "express";
 import cors from "cors";
-import { typeDefs } from "../schema";
+import { typeDefs } from "./schema";
 import { resolvers } from "./resolvers";
-import { createContext, prisma } from "../context";
+import { createContext, prisma } from "./context";
 import * as dotenv from "dotenv";
 
 dotenv.config();
@@ -34,7 +34,7 @@ async function startServer() {
     })
   );
 
-  app.get("/health", (req, res) => {
+  app.get("/health", (_req, res) => {
     res.json({ status: "ok", timestamp: new Date().toISOString() });
   });
 
